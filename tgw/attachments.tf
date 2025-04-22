@@ -17,3 +17,21 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "vpc_west_attachment" {
   }
 }
 
+# Attach the VPC in us-east-1 to the Transit Gateway in us-east-1
+resource "aws_ec2_transit_gateway_vpc_attachment" "vpc_east_attachment" {
+  provider = aws.delegated_account_us-east-1
+
+  subnet_ids         = var.vpc_east_subnet_ids
+  transit_gateway_id = aws_ec2_transit_gateway.tgw_east.id
+  vpc_id             = var.vpc_east_id
+
+  dns_support                                     = "enable"
+  transit_gateway_default_route_table_association = true
+  transit_gateway_default_route_table_propagation = true
+
+  tags = {
+    Name        = "${var.vpc_names["us-east-1"]}-tgw-attachment"
+    Environment = "Non-Production"
+    ManagedBy   = "terraform"
+  }
+}

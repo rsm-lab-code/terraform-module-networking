@@ -12,7 +12,7 @@ variable "delegated_account_id" {
 variable "tgw_name" {
   description = "Name of the Transit Gateway"
   type        = string
-  default     = "multi-region-tgw"
+  default     = "delegated-account-tgw"
 }
 
 variable "amazon_side_asn" {

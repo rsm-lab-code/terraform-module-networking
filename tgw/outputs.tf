@@ -18,3 +18,27 @@ output "vpc_west_attachment_id" {
   value       = aws_ec2_transit_gateway_vpc_attachment.vpc_west_attachment.id
 }
 
+output "transit_gateway_east_id" {
+  description = "ID of the created Transit Gateway in us-east-1"
+  value       = aws_ec2_transit_gateway.tgw_east.id
+}
+
+output "transit_gateway_east_arn" {
+  description = "ARN of the created Transit Gateway in us-east-1"
+  value       = aws_ec2_transit_gateway.tgw_east.arn
+}
+
+output "transit_gateway_route_table_east_id" {
+  description = "ID of the Transit Gateway route table in us-east-1"
+  value       = aws_ec2_transit_gateway_route_table.tgw_rt_east.id
+}
+
+output "vpc_east_attachment_id" {
+  description = "ID of the us-east-1 VPC attachment"
+  value       = aws_ec2_transit_gateway_vpc_attachment.vpc_east_attachment.id
+}
+
+output "tgw_peering_id" {
+  description = "ID of the Transit Gateway peering connection"
+  value       = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
+}
