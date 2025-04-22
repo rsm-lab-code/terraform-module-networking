@@ -43,7 +43,3 @@ output "tgw_peering_id" {
   value       = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
 }
 
-output "vpc_east_attachment_id" {
-  description = "ID of the us-east-1 VPC attachment"
-  value       = aws_ec2_transit_gateway_vpc_attachment.vpc_east_attachment.id
-}
