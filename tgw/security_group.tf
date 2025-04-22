@@ -19,8 +19,8 @@ resource "aws_security_group" "west_test_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["your-ip-address/32"]
-    description = "Allow SSH from admin IP"
+    cidr_blocks = [var.rsm_vpn]  
+    description = "Allow SSH from RSM VPN"
   }
   
   # Allow all outbound traffic
@@ -53,8 +53,8 @@ resource "aws_security_group" "east_test_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["your-ip-address/32"]
-    description = "Allow SSH from admin IP"
+    cidr_blocks = [var.rsm_vpn]  
+    description = "Allow SSH from RSM VPN"
   }
   
   # Allow all outbound traffic

@@ -70,3 +70,9 @@ variable "vpc_east_route_table_ids" {
   description = "IDs of the route tables in us-east-1 VPC"
   type        = map(string)
 }
+
+variable "rsm_vpn" {
+  description = "IP address allowed for SSH access (CIDR notation)"
+  type        = string
+  default     = "0.0.0.0/0" 
+}
