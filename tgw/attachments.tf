@@ -35,3 +35,19 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "vpc_east_attachment" {
     ManagedBy   = "terraform"
   }
 }
+
+#Enable route propagation
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "west_to_tgw" {
+  provider = aws.delegated_account_us-west-2
+  
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.vpc_west_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "east_to_tgw" {
+  provider = aws.delegated_account_us-east-1
+  
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.vpc_east_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt_east.id
+}

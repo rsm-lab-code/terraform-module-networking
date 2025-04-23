@@ -43,3 +43,7 @@ output "tgw_peering_id" {
   value       = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
 }
 
+output "tgw_peering_state" {
+  description = "State of the Transit Gateway peering connection"
+  value       = aws_ec2_transit_gateway_peering_attachment.tgw_peering.state
+}
