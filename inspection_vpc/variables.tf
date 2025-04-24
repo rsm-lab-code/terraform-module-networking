@@ -1,4 +1,4 @@
-# inspection_vpc/variables.tf
+
 
 variable "aws_region" {
   description = "AWS region for the inspection VPC"
