@@ -9,7 +9,7 @@ resource "aws_vpc" "inspection_vpc" {
   enable_dns_hostnames = true
   
   tags = {
-    Name        = "inspection-vpc"
+    Name        = "spoke1-vpc"
     Environment = "security"
     ManagedBy   = "terraform"
   }
