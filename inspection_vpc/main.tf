@@ -86,3 +86,63 @@ resource "aws_nat_gateway" "inspection_nat_gw" {
   
   depends_on = [aws_internet_gateway.inspection_igw]
 }
+
+# Create route table for public subnets
+resource "aws_route_table" "inspection_public_rt" {
+  provider = aws.delegated_account_us-west-2
+  vpc_id   = aws_vpc.inspection_vpc.id
+  
+  tags = {
+    Name        = "inspection-public-rt"
+    Environment = "security"
+    ManagedBy   = "terraform"
+    Tier        = "public"
+  }
+}
+
+# Add default route to internet gateway
+resource "aws_route" "public_internet_route" {
+  provider               = aws.delegated_account_us-west-2
+  route_table_id         = aws_route_table.inspection_public_rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.inspection_igw.id
+}
+
+# Associate public route table with public subnets
+resource "aws_route_table_association" "public_rt_association" {
+  provider       = aws.delegated_account_us-west-2
+  count          = var.public_subnet_count
+  subnet_id      = aws_subnet.inspection_public_subnets[count.index].id
+  route_table_id = aws_route_table.inspection_public_rt.id
+}
+
+# Create route tables for private subnets (one per AZ)
+resource "aws_route_table" "inspection_private_rt" {
+  provider = aws.delegated_account_us-west-2
+  count    = var.private_subnet_count
+  vpc_id   = aws_vpc.inspection_vpc.id
+  
+  tags = {
+    Name        = "inspection-private-rt-${var.az_suffixes[count.index % length(var.az_suffixes)]}"
+    Environment = "security"
+    ManagedBy   = "terraform"
+    Tier        = "private"
+  }
+}
+
+# Add NAT gateway routes to private route tables
+resource "aws_route" "private_nat_route" {
+  provider               = aws.delegated_account_us-west-2
+  count                  = var.private_subnet_count
+  route_table_id         = aws_route_table.inspection_private_rt[count.index].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.inspection_nat_gw[count.index % var.public_subnet_count].id
+}
+
+# Associate private route tables with private subnets
+resource "aws_route_table_association" "private_rt_association" {
+  provider       = aws.delegated_account_us-west-2
+  count          = var.private_subnet_count
+  subnet_id      = aws_subnet.inspection_private_subnets[count.index].id
+  route_table_id = aws_route_table.inspection_private_rt[count.index].id
+}
