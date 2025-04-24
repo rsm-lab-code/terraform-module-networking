@@ -20,10 +20,6 @@ output "inspection_private_subnet_ids" {
   value       = aws_subnet.inspection_private_subnets[*].id
 }
 
-output "inspection_tgw_subnet_ids" {
-  description = "IDs of TGW attachment subnets in the inspection VPC"
-  value       = aws_subnet.inspection_tgw_subnets[*].id
-}
 
 output "nat_gateway_ids" {
   description = "IDs of the NAT gateways in the inspection VPC"
