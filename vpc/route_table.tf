@@ -12,9 +12,6 @@ resource "aws_route_table" "public_rt_west" {
     Name        = "${var.vpc_names["us-west-2"]}-public-rt"
     Environment = "Production"
   }
- lifecycle {
-   prevent_destroy = true
- }
 
 }
 
