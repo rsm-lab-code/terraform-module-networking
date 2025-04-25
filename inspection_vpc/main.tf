@@ -58,7 +58,19 @@ resource "aws_subnet" "inspection_private_subnets" {
     Tier        = "private"
   }
 }
-
+#Create TGW attachment
+resource "aws_ec2_transit_gateway_vpc_attachment" "inspection_vpc_attachment" {
+  provider           = aws.delegated_account_us-west-2
+  subnet_ids         = aws_subnet.inspection_tgw_subnets[*].id
+  transit_gateway_id = var.transit_gateway_id
+  vpc_id             = aws_vpc.inspection_vpc.id
+  
+  appliance_mode_support = "enable"
+  
+  tags = {
+    Name = "inspection-vpc-tgw-attachment"
+  }
+}
 
 # Create TGW attachment subnets
 resource "aws_subnet" "inspection_tgw_subnets" {
