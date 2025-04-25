@@ -40,3 +40,9 @@ variable "az_suffixes" {
   type        = list(string)
   default     = ["a", "b"]
 }
+
+variable "transit_gateway_id" {
+  description = "ID of the Transit Gateway to attach the inspection VPC to"
+  type        = string
+  default     = ""
+}
