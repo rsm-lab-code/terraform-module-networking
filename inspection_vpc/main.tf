@@ -65,7 +65,7 @@ resource "aws_subnet" "inspection_tgw_subnets" {
   provider          = aws.delegated_account_us-west-2
   count             = var.tgw_subnet_count
   vpc_id            = aws_vpc.inspection_vpc.id
-  cidr_block        = cidrsubnet(aws_vpc.inspection_vpc.cidr_block, 8, count.index + var.public_subnet_count + var.private_subnet_count)
+  cidr_block        = cidrsubnet(aws_vpc.inspection_vpc.cidr_block, 3, count.index + var.public_subnet_count + var.private_subnet_count)
   availability_zone = "${var.aws_region}${var.az_suffixes[count.index % length(var.az_suffixes)]}"
   
   tags = {
