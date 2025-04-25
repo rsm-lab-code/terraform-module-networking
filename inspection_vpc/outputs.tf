@@ -36,3 +36,8 @@ output "inspection_private_rt_ids" {
   value       = aws_route_table.inspection_private_rt[*].id
 }
 
+output "inspection_tgw_subnet_ids" {
+  description = "IDs of TGW attachment subnets in the inspection VPC"
+  value       = aws_subnet.inspection_tgw_subnets[*].id
+}
+
