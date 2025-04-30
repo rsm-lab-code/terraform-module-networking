@@ -1,4 +1,4 @@
-# Public Route Tables (with route to Internet Gateway)
+# Public Route Tables (with inline routes)
 resource "aws_route_table" "public_rt_west" {
   provider = aws.delegated_account_us-west-2
   vpc_id   = aws_vpc.vpc_west.id
@@ -13,7 +13,11 @@ resource "aws_route_table" "public_rt_west" {
     Environment = "Production"
   }
 
+  lifecycle {
+    ignore_changes = [route]
+  }
 }
+
 resource "aws_route_table" "public_rt_east" {
   provider = aws.delegated_account_us-east-1
   vpc_id   = aws_vpc.vpc_east.id
@@ -27,8 +31,13 @@ resource "aws_route_table" "public_rt_east" {
     Name        = "${var.vpc_names["us-east-1"]}-public-rt"
     Environment = "NonProduction"
   }
+
+  lifecycle {
+    ignore_changes = [route]
+  }
 }
-# Private Route Tables (with route to NAT Gateway)
+
+# Private Route Tables (with inline routes)
 resource "aws_route_table" "private_rt_west" {
   provider = aws.delegated_account_us-west-2
   vpc_id   = aws_vpc.vpc_west.id
@@ -42,7 +51,12 @@ resource "aws_route_table" "private_rt_west" {
     Name        = "${var.vpc_names["us-west-2"]}-private-rt"
     Environment = "Production"
   }
+
+  lifecycle {
+    ignore_changes = [route]
+  }
 }
+
 resource "aws_route_table" "private_rt_east" {
   provider = aws.delegated_account_us-east-1
   vpc_id   = aws_vpc.vpc_east.id
@@ -56,24 +70,31 @@ resource "aws_route_table" "private_rt_east" {
     Name        = "${var.vpc_names["us-east-1"]}-private-rt"
     Environment = "NonProduction"
   }
+
+  lifecycle {
+    ignore_changes = [route]
+  }
 }
-# Route Table Associations
-# Assuming first subnet (index 0) is public and second subnet (index 1) is private
+
+# Route Table Associations remain the same
 resource "aws_route_table_association" "public_rta_west" {
   provider       = aws.delegated_account_us-west-2
   subnet_id      = aws_subnet.subnet_west[0].id
   route_table_id = aws_route_table.public_rt_west.id
 }
+
 resource "aws_route_table_association" "private_rta_west" {
   provider       = aws.delegated_account_us-west-2
   subnet_id      = aws_subnet.subnet_west[1].id
   route_table_id = aws_route_table.private_rt_west.id
 }
+
 resource "aws_route_table_association" "public_rta_east" {
   provider       = aws.delegated_account_us-east-1
   subnet_id      = aws_subnet.subnet_east[0].id
   route_table_id = aws_route_table.public_rt_east.id
 }
+
 resource "aws_route_table_association" "private_rta_east" {
   provider       = aws.delegated_account_us-east-1
   subnet_id      = aws_subnet.subnet_east[1].id
