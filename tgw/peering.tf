@@ -52,20 +52,3 @@ resource "aws_ec2_transit_gateway_route" "east_to_west" {
 }
 
 
-# Associate the peering attachment with the west route table
-resource "aws_ec2_transit_gateway_route_table_association" "tgw_peering_west_rt_association" {
-  provider                       = aws.delegated_account_us-west-2
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt.id
-
-  depends_on = [aws_ec2_transit_gateway_peering_attachment_accepter.tgw_peering_accepter]
-}
-
-# Associate the peering attachment with the east route table
-resource "aws_ec2_transit_gateway_route_table_association" "tgw_peering_east_rt_association" {
-  provider                       = aws.delegated_account_us-east-1
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt_east.id
-
-  depends_on = [aws_ec2_transit_gateway_peering_attachment_accepter.tgw_peering_accepter]
-}
