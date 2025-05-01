@@ -51,3 +51,9 @@ variable "transit_gateway_route_table_id" {
   description = "ID of the Transit Gateway route table"
   type        = string
 }
+
+
+variable "transit_gateway_route_table_id" {
+  description = "ID of the Transit Gateway route table for association"
+  type        = string
+}
