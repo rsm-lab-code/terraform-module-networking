@@ -34,3 +34,10 @@ resource "aws_ec2_transit_gateway_route" "tgw_default_route" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.inspection_vpc_attachment.id
   transit_gateway_route_table_id = var.transit_gateway_route_table_id
 }
+
+# Associate the inspection VPC attachment with the TGW route table
+resource "aws_ec2_transit_gateway_route_table_association" "inspection_vpc_rt_association" {
+  provider                       = aws.delegated_account_us-west-2
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.inspection_vpc_attachment.id
+  transit_gateway_route_table_id = var.transit_gateway_route_table_id
+}

@@ -41,3 +41,8 @@ output "inspection_tgw_subnet_ids" {
   value       = aws_subnet.inspection_tgw_subnets[*].id
 }
 
+
+output "inspection_vpc_tgw_attachment_id" {
+  description = "ID of the Transit Gateway attachment for the inspection VPC"
+  value       = aws_ec2_transit_gateway_vpc_attachment.inspection_vpc_attachment.id
+}
