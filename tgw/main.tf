@@ -5,7 +5,7 @@ resource "aws_ec2_transit_gateway" "tgw" {
   description                     = "Transit Gateway us-west-2"
   amazon_side_asn                 = var.amazon_side_asn
   auto_accept_shared_attachments  = "enable"
-  default_route_table_association = "enable"
+  default_route_table_association = "disable"
   default_route_table_propagation = "enable"
   dns_support                     = "enable"
   vpn_ecmp_support                = "enable"
@@ -38,7 +38,7 @@ resource "aws_ec2_transit_gateway" "tgw_east" {
   description                     = "Transit Gateway us-east-1"
   amazon_side_asn                 = var.amazon_side_asn + 1  # Use a different ASN
   auto_accept_shared_attachments  = "enable"
-  default_route_table_association = "enable"
+  default_route_table_association = "disable"
   default_route_table_propagation = "enable"
   dns_support                     = "enable"
   vpn_ecmp_support                = "enable"
