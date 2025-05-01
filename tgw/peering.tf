@@ -43,7 +43,8 @@ resource "aws_ec2_transit_gateway_route" "west_to_east" {
 resource "aws_ec2_transit_gateway_route" "east_to_west" {
   provider = aws.delegated_account_us-east-1
 
-  destination_cidr_block         = var.vpc_west_cidr
+  #  destination_cidr_block         = var.vpc_west_cidr
+  destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt_east.id
 
