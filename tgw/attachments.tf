@@ -51,3 +51,35 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "east_to_tgw" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.vpc_east_attachment.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt_east.id
 }
+
+
+# Associate the west VPC attachment with the TGW route table
+resource "aws_ec2_transit_gateway_route_table_association" "vpc_west_rt_association" {
+  provider                       = aws.delegated_account_us-west-2
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.vpc_west_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt.id
+}
+
+# Associate the east VPC attachment with the TGW route table
+resource "aws_ec2_transit_gateway_route_table_association" "vpc_east_rt_association" {
+  provider                       = aws.delegated_account_us-east-1
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.vpc_east_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt_east.id
+}
+
+# Associate the peering attachments
+resource "aws_ec2_transit_gateway_route_table_association" "tgw_peering_west_rt_association" {
+  provider                       = aws.delegated_account_us-west-2
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt.id
+
+  depends_on = [aws_ec2_transit_gateway_peering_attachment_accepter.tgw_peering_accepter]
+}
+
+resource "aws_ec2_transit_gateway_route_table_association" "tgw_peering_east_rt_association" {
+  provider                       = aws.delegated_account_us-east-1
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.tgw_peering.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw_rt_east.id
+
+  depends_on = [aws_ec2_transit_gateway_peering_attachment_accepter.tgw_peering_accepter]
+}
