@@ -16,10 +16,10 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             actions = ["aws:forward_to_sfe"]
             match_attributes {
               source {
-                address_definition = "10.0.0.0/8"  # Covers all your VPC CIDRs
+                address_definition = "10.0.0.0/8"  
               }
               destination {
-                address_definition = "10.0.0.0/8"  # Covers all your VPC CIDRs
+                address_definition = "10.0.0.0/8"  
               }
             }
           }
@@ -32,7 +32,7 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             actions = ["aws:pass"]
             match_attributes {
               destination {
-                address_definition = "8.8.8.8/32"  # Google DNS
+                address_definition = "8.8.8.8/32"  
               }
               protocols = [17]  # UDP
               destination_port {

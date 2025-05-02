@@ -1,5 +1,5 @@
 # Transit Gateway - central hub for VPC connectivity
-resource "aws_ec2_transit_gateway" "tgw" {
+resource "aws_ec2_transit_gateway" "tgw-west" {
   provider = aws.delegated_account_us-west-2
   
   description                     = "Transit Gateway us-west-2"
