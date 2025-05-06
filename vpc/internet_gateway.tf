@@ -19,4 +19,3 @@ resource "aws_internet_gateway" "igw_east" {
     Environment = "NonProduction"
   }
 }
-

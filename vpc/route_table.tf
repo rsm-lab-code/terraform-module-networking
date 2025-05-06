@@ -76,8 +76,7 @@ resource "aws_route_table" "private_rt_east" {
   }
 }
 
-
-# Route Table Associations 
+# Route Table Associations remain the same
 resource "aws_route_table_association" "public_rta_west" {
   provider       = aws.delegated_account_us-west-2
   subnet_id      = aws_subnet.subnet_west[0].id

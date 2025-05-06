@@ -63,20 +63,4 @@ resource "aws_subnet" "subnet_east" {
   }
 }
 
-# Create development VPC in us-west-2
-resource "aws_vpc" "vpc_dev" {
-  provider = aws.delegated_account_us-west-2
-  
-  # Use IPAM pool for IP assignment
-  ipv4_ipam_pool_id   = var.ipam_pool_ids["us-west-2-dev"]
-  ipv4_netmask_length = 21
-  
-  tags = {
-    Name = var.vpc_names["us-west-2-dev"]
-    Environment = "Development"
-  }
-}
-
-
-
 

@@ -19,7 +19,7 @@ resource "aws_eip" "nat_eip_east" {
   }
 }
 
-# Create NAT Gateway in us-west-2 
+# Create NAT Gateway in us-west-2 (in the first subnet)
 resource "aws_nat_gateway" "nat_gw_west" {
   provider      = aws.delegated_account_us-west-2
   allocation_id = aws_eip.nat_eip_west.id
@@ -48,4 +48,3 @@ resource "aws_nat_gateway" "nat_gw_east" {
   # Ensure the Internet Gateway is created first
   depends_on = [aws_internet_gateway.igw_east]
 }
-
