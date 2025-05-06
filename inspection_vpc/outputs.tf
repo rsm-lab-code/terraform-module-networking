@@ -65,4 +65,5 @@ output "network_firewall_policy_arn" {
   value       = aws_networkfirewall_firewall_policy.inspection_policy.arn
 }
 
+output "transit_gateway_route_table_id" {}
 
