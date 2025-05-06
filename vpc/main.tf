@@ -77,23 +77,6 @@ resource "aws_vpc" "vpc_dev" {
   }
 }
 
-# Create two subnets in us-west-2 development VPC
-resource "aws_subnet" "subnet_dev" {
-  count = 2
-  provider = aws.delegated_account_us-west-2
-  
-  vpc_id = aws_vpc.vpc_dev.id
-  
-  # We'll calculate a /24 CIDR from the VPC CIDR
-  cidr_block = cidrsubnet(aws_vpc.vpc_dev.cidr_block, 3, count.index)
-  
-  availability_zone = "${var.aws_regions[0]}${count.index == 0 ? "a" : "b"}"
-  
-  tags = {
-    Name = var.subnet_names["us-west-2-dev"][count.index]
-    Environment = "Development"
-  }
-}
 
 
 
