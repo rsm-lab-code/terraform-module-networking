@@ -154,9 +154,9 @@ resource "aws_route_table" "inspection_private_rt" {
   count    = var.private_subnet_count
   vpc_id   = aws_vpc.inspection_vpc.id
   
-    lifecycle {
-    ignore_changes = [subnet_id, route_table_id]
-  }
+#    lifecycle {
+ #   ignore_changes = [subnet_id, route_table_id]
+  #}
   tags = {
     Name        = "inspection-private-rt-${var.az_suffixes[count.index % length(var.az_suffixes)]}"
     Environment = "security"
