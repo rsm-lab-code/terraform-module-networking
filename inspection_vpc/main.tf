@@ -174,6 +174,10 @@ resource "aws_route_table_association" "private_rt_association" {
   count          = var.private_subnet_count
   subnet_id      = aws_subnet.inspection_private_subnets[count.index].id
   route_table_id = aws_route_table.inspection_private_rt[count.index].id
+
+ lifecycle {
+    create_before_destroy = true
+  }
 }
 
 
@@ -196,4 +200,8 @@ resource "aws_ec2_transit_gateway_route_table_association" "inspection_vpc_rt_as
   provider                       = aws.delegated_account_us-west-2
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.inspection_vpc_attachment.id
   transit_gateway_route_table_id = var.transit_gateway_route_table_id
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
