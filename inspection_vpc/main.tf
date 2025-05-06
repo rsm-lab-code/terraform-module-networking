@@ -175,16 +175,16 @@ resource "aws_route" "private_nat_route" {
 }
 
 # Associate private route tables with private subnets
-resource "aws_route_table_association" "private_rt_association" {
-  provider       = aws.delegated_account_us-west-2
-  count          = var.private_subnet_count
-  subnet_id      = aws_subnet.inspection_private_subnets[count.index].id
-  route_table_id = aws_route_table.inspection_private_rt[count.index].id
+#resource "aws_route_table_association" "private_rt_association" {
+ # provider       = aws.delegated_account_us-west-2
+  #count          = var.private_subnet_count
+  #subnet_id      = aws_subnet.inspection_private_subnets[count.index].id
+  #route_table_id = aws_route_table.inspection_private_rt[count.index].id
 
- lifecycle {
-    ignore_changes = [route_table_id, subnet_id]
-  }
-}
+ #lifecycle {
+  #  ignore_changes = [route_table_id, subnet_id]
+  #}
+#}
 
 
 # Associate the inspection VPC attachment with the TGW route table
