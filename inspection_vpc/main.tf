@@ -138,15 +138,15 @@ resource "aws_route" "public_internet_route" {
 }
 
 # Associate public route table with public subnets
-resource "aws_route_table_association" "public_rt_association" {
-  provider       = aws.delegated_account_us-west-2
-  count          = var.public_subnet_count
-  subnet_id      = aws_subnet.inspection_public_subnets[count.index].id
-  route_table_id = aws_route_table.inspection_public_rt.id
-    lifecycle {
-    ignore_changes = [subnet_id, route_table_id]
-  } 
-}
+#resource "aws_route_table_association" "public_rt_association" {
+ # provider       = aws.delegated_account_us-west-2
+  #count          = var.public_subnet_count
+  #subnet_id      = aws_subnet.inspection_public_subnets[count.index].id
+  #route_table_id = aws_route_table.inspection_public_rt.id
+   # lifecycle {
+    #ignore_changes = [subnet_id, route_table_id]
+  #} 
+#}
 
 # Create route tables for private subnets (one per AZ)
 resource "aws_route_table" "inspection_private_rt" {
