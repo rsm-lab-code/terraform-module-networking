@@ -25,6 +25,10 @@ resource "aws_route_table_association" "tgw_rt_association" {
   count          = var.tgw_subnet_count
   subnet_id      = aws_subnet.inspection_tgw_subnets[count.index].id
   route_table_id = aws_route_table.inspection_tgw_rt.id
+
+   lifecycle {
+    ignore_changes = [subnet_id, route_table_id]
+  }
 }
 
 # TGW Route Table to direct traffic through inspection VPC
