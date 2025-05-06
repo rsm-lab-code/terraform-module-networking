@@ -69,7 +69,7 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
   }
 }
 
-# Network Firewall stateful rule group
+# Update stateful rule group for east-west traffic
 resource "aws_networkfirewall_rule_group" "stateful_rules" {
   provider    = aws.delegated_account_us-west-2
   capacity    = 100
@@ -86,7 +86,7 @@ pass tcp any any <> any any (msg:"Allow established connections"; flow:establish
 # Allow ICMP for ping
 pass icmp any any -> any any (msg:"Allow ICMP"; sid:2;)
 
-# Allow all internal traffic between VPCs
+# Allow all internal traffic between VPCs (east-west)
 pass ip 10.0.0.0/8 any -> 10.0.0.0/8 any (msg:"Allow internal VPC traffic"; sid:3;)
 
 # Allow DNS traffic
@@ -100,6 +100,10 @@ pass tcp any any -> any 443 (msg:"Allow HTTPS"; sid:7;)
 # Block common attack vectors
 drop tcp any any -> any 22 (msg:"Block SSH from Internet"; sid:8;)
 drop tcp any any -> any 3389 (msg:"Block RDP from Internet"; sid:9;)
+
+# Specific East-West traffic rules (production to development)
+pass tcp 10.0.0.0/17 any -> 10.0.64.0/18 any (msg:"Allow traffic from prod to dev"; sid:10;)
+pass tcp 10.0.64.0/18 any -> 10.0.0.0/17 any (msg:"Allow traffic from dev to prod"; sid:11;)
 EOF
     }
   }
@@ -110,7 +114,6 @@ EOF
     ManagedBy   = "terraform"
   }
 }
-
 # Network Firewall policy
 resource "aws_networkfirewall_firewall_policy" "inspection_policy" {
   provider    = aws.delegated_account_us-west-2

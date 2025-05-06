@@ -10,6 +10,7 @@ variable "vpc_names" {
   default = {
     "us-west-2" = "production-vpc"
     "us-east-1" = "nonproduction-vpc"
+"us-west-2-dev" = "development-vpc"
   }
 }
 
@@ -19,6 +20,7 @@ variable "subnet_names" {
   default = {
     "us-west-2" = ["prod-subnet-1", "prod-subnet-2"]
     "us-east-1" = ["nonprod-subnet-1", "nonprod-subnet-2"]
+ "us-west-2-dev" = ["dev-subnet-1", "dev-subnet-2"]
   }
 }
 
