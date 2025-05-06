@@ -1,5 +1,5 @@
 # Transit Gateway - central hub for VPC connectivity
-resource "aws_ec2_transit_gateway" "tgw" {
+resource "aws_ec2_transit_gateway" "tgw-west" {
   provider = aws.delegated_account_us-west-2
   
   description                     = "Transit Gateway us-west-2"
@@ -58,6 +58,32 @@ resource "aws_ec2_transit_gateway_route_table" "tgw_rt_east" {
 
   tags = {
     Name        = "${var.tgw_name}-east-rt"
+    Environment = "shared"
+    ManagedBy   = "terraform"
+  }
+}
+
+# Create a dedicated route table for spoke VPCs
+resource "aws_ec2_transit_gateway_route_table" "spoke_rt" {
+  provider = aws.delegated_account_us-west-2
+  
+  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  
+  tags = {
+    Name        = "${var.tgw_name}-spoke-rt"
+    Environment = "shared"
+    ManagedBy   = "terraform"
+  }
+}
+
+# Create a dedicated route table for the inspection VPC
+resource "aws_ec2_transit_gateway_route_table" "inspection_rt" {
+  provider = aws.delegated_account_us-west-2
+  
+  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  
+  tags = {
+    Name        = "${var.tgw_name}-inspection-rt"
     Environment = "shared"
     ManagedBy   = "terraform"
   }
