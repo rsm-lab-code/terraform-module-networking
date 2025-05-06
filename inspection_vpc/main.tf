@@ -138,15 +138,15 @@ resource "aws_route" "public_internet_route" {
 }
 
 # Associate public route table with public subnets
-#resource "aws_route_table_association" "public_rt_association" {
- # provider       = aws.delegated_account_us-west-2
-  #count          = var.public_subnet_count
-  #subnet_id      = aws_subnet.inspection_public_subnets[count.index].id
-  #route_table_id = aws_route_table.inspection_public_rt.id
-   # lifecycle {
-    #ignore_changes = [subnet_id, route_table_id]
-  #} 
-#}
+resource "aws_route_table_association" "public_rt_association" {
+  provider       = aws.delegated_account_us-west-2
+  count          = var.public_subnet_count
+  subnet_id      = aws_subnet.inspection_public_subnets[count.index].id
+  route_table_id = aws_route_table.inspection_public_rt.id
+    lifecycle {
+    ignore_changes = [subnet_id, route_table_id]
+  } 
+}
 
 # Create route tables for private subnets (one per AZ)
 resource "aws_route_table" "inspection_private_rt" {
@@ -154,9 +154,6 @@ resource "aws_route_table" "inspection_private_rt" {
   count    = var.private_subnet_count
   vpc_id   = aws_vpc.inspection_vpc.id
   
-#    lifecycle {
- #   ignore_changes = [subnet_id, route_table_id]
-  #}
   tags = {
     Name        = "inspection-private-rt-${var.az_suffixes[count.index % length(var.az_suffixes)]}"
     Environment = "security"
@@ -175,16 +172,16 @@ resource "aws_route" "private_nat_route" {
 }
 
 # Associate private route tables with private subnets
-#resource "aws_route_table_association" "private_rt_association" {
- # provider       = aws.delegated_account_us-west-2
-  #count          = var.private_subnet_count
-  #subnet_id      = aws_subnet.inspection_private_subnets[count.index].id
-  #route_table_id = aws_route_table.inspection_private_rt[count.index].id
+resource "aws_route_table_association" "private_rt_association" {
+  provider       = aws.delegated_account_us-west-2
+  count          = var.private_subnet_count
+  subnet_id      = aws_subnet.inspection_private_subnets[count.index].id
+  route_table_id = aws_route_table.inspection_private_rt[count.index].id
 
- #lifecycle {
-  #  ignore_changes = [route_table_id, subnet_id]
-  #}
-#}
+ lifecycle {
+    ignore_changes = [route_table_id, subnet_id]
+  }
+}
 
 
 # Associate the inspection VPC attachment with the TGW route table
