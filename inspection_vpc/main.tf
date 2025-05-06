@@ -143,6 +143,9 @@ resource "aws_route_table_association" "public_rt_association" {
   count          = var.public_subnet_count
   subnet_id      = aws_subnet.inspection_public_subnets[count.index].id
   route_table_id = aws_route_table.inspection_public_rt.id
+    lifecycle {
+    ignore_changes = [subnet_id, route_table_id]
+  } 
 }
 
 # Create route tables for private subnets (one per AZ)
@@ -151,6 +154,9 @@ resource "aws_route_table" "inspection_private_rt" {
   count    = var.private_subnet_count
   vpc_id   = aws_vpc.inspection_vpc.id
   
+    lifecycle {
+    ignore_changes = [subnet_id, route_table_id]
+  }
   tags = {
     Name        = "inspection-private-rt-${var.az_suffixes[count.index % length(var.az_suffixes)]}"
     Environment = "security"
