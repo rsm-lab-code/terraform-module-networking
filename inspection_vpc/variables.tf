@@ -52,4 +52,8 @@ variable "transit_gateway_route_table_id" {
   type        = string
 }
 
-
+variable "network_firewall_name" {
+  description = "Name of the AWS Network Firewall"
+  type        = string
+  default     = "central-inspection-firewall"
+}
